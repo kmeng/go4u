@@ -1,0 +1,25 @@
+<input type="hidden" name="product_no" value="9966">
+        <input type="hidden" name="option_type" value="T">
+        <input type="hidden" name="main_cate_no" value="1">
+        <input type="hidden" name="add_option_name" value="">
+        <input type="hidden" name="display_group" value="3">
+        <input type="hidden" name="product_min" value="1">
+        <input type="hidden" name="command">
+        <input type="hidden" name="redirect">
+        <input type="hidden" name="basket_type" value="A0000">
+        <input type="hidden" name="product_name" value="Hard tack jacket">
+        <input type="hidden" name="product_price" value="110,000">
+        <input type="hidden" name="has_option" value="F"/>
+
+<input type="hidden" name="product_no" value="9979">
+        <input type="hidden" name="option_type" value="T">
+        <input type="hidden" name="main_cate_no" value="15">
+        <input type="hidden" name="add_option_name" value="">
+        <input type="hidden" name="display_group" value="1">
+        <input type="hidden" name="product_min" value="1">
+        <input type="hidden" name="command">
+        <input type="hidden" name="redirect">
+        <input type="hidden" name="basket_type" value="A0000">
+        <input type="hidden" name="product_name" value="Lee Seul ops">
+        <input type="hidden" name="product_price" value="83,000">
+        <input type="hidden" name="has_option" value="F"/>
