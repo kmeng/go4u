@@ -78,6 +78,9 @@ public class InfoService {
             if(node.getClass() ==  tagClazz){
                 Tag tag = (Tag)node;
                 String srcName = tag.getAttribute("name");
+                if(srcName == null){
+                	srcName = tag.getAttribute("id");
+                }
                 if(srcName != null && srcName.equals(name)){
                     nodeList.remove(i);
                     return tag.getAttribute(attributeName);
