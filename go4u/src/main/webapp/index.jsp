@@ -24,6 +24,7 @@
 <script	src="<%=request.getContextPath() %>/assets/js/plugins/jquery.slimscroll.min.js"></script>
 <script	src="<%=request.getContextPath() %>/assets/js/plugins/validation/jquery.validate.min.js"></script>
 <script	src="<%=request.getContextPath() %>/assets/js/plugins/validation/additional-methods.min.js"></script>
+<script	src="<%=request.getContextPath() %>/assets/js/plugins/jquery-ui/jquery.ui.spinner.min.js"></script>
 <script	src="<%=request.getContextPath() %>/assets/bootstrap/js/bootstrap.min.js"></script>
 <script	src="<%=request.getContextPath() %>/assets/js/plugins/eakroko.min.js"></script>
 <script	src="<%=request.getContextPath() %>/assets/js/plugins/flat-theme.min.js"></script>
@@ -53,35 +54,60 @@
 						<div class="control-group">
 							<input class="span10 input" name="url" data-url-rule="true"
 								data-required-rule="true" placeholder="代购商品链接">
-							<button id="btn-price" type="button" class="btn btn-info">计算价格</button>
+							<button id="btn-price" type="button" class="btn btn-info">帮我找</button>
 						</div>
 					</form>
 				</div>
 				<div class="row-fluid">
-					<div class="span12"
-						style="float: none; margin-left: auto; margin-right: auto;display:none;" id="product-info">
+					<div class="span12" style="float: none; margin-left: auto; margin-right: auto;display:none;" id="product-info">
 						<div class="offset1 span4">
 							<img id="big_img">
 						</div>
 						<div class="span6 container-fluid" style="text-align: left;">
-							<div class="row-fluid">
-								<div class="span2">品名</div>
-								<div class="span4" id="name"></div>
-							</div>
-							<div class="row-fluid">
-								<div class="span2">价格</div>
-								<div class="span4" id="price"></div>
-							</div>
+							<form class="form-horizontal">
+								<div class="control-group">
+									<label class="control-label" for="prd_name">商品名称</label>
+									<div class="controls">
+									    <span id="prd_name"></span>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="prd_price">价格</label>
+									<div class="controls">
+										<span id="prd_price"></span>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="count">数量</label>
+									<div class="controls">
+										<input type="text" id="count" class="spinner input-small" value="1">
+									</div>
+								</div>
+								<div class="control-group">
+								    <div class="controls">
+								        <button type="button" id="btn-money" class="btn btn-info">计算价格</button>
+								    </div>
+								</div>
+							</form>
 						</div>
 					</div>
+				</div>
+				<div class="row-fluid">
+				    <ul class="tiles">
+				        <li class="teal long span10">
+				           <a><span class="count" id="results"></span></a>
+				        </li>
+				    </ul>
 				</div>
 			</div>
     	</div>
     </div>
 
 	<script>
+	var currency, price;
     $(function(){
         $.post('<%=request.getContextPath()%>/currency').done(function(resp){
+        	currency = parseFloat(resp.currency);
         	$('#currency').empty().text('100 韩元（₩）= ' + resp.currency + '人民币元（￥）');
          });
         
@@ -89,9 +115,18 @@
             $.post('<%=request.getContextPath()%>/info', $('#link-form').serialize()).done(function(resp){
                 $('#product-info').show();
                 $('#big_img').attr('src',resp.main_img);
-                $('#price').empty().text(resp.price);
-                $('#name').empty().text(resp.name);
+                try {
+                    price = parseFloat(resp.price.replace(',', ''));
+                } catch(e){
+                }
+                $('#prd_price').empty().text(resp.price);
+                $('#prd_name').empty().text(resp.name);
             });
+        });
+        
+        $('#btn-money').click(function(){
+        	var result = (price * $('#count').val() + 2500)/100 * currency;
+        	$('#results').empty().text('(' + price + ' X '+ $('#count').val() + ' + 2500) ÷ 100 X ' + currency + ' = ' + result + "(人民币元)")
         });
     });
 </script>
