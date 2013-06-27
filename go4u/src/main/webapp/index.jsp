@@ -16,6 +16,17 @@
 <link href="<%=request.getContextPath() %>/assets/css/jqueryui/themes/smoothness/jquery.ui.theme.css" rel="stylesheet">
 <link href="<%=request.getContextPath() %>/assets/css/style.css" rel="stylesheet">
 <link href="<%=request.getContextPath() %>/assets/css/themes.css" rel="stylesheet">
+<style>
+#results {
+    font-size: 3em;
+    color: white;
+    line-height: 1.5em;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-weight:bold;
+}
+</style>
 
 <script src="<%=request.getContextPath() %>/assets/js/jquery.min.js"></script>
 <script	src="<%=request.getContextPath() %>/assets/js/plugins/jquery.nicescroll.min.js"></script>
@@ -58,46 +69,50 @@
 						</div>
 					</form>
 				</div>
-				<div class="row-fluid">
-					<div class="span12" style="float: none; margin-left: auto; margin-right: auto;display:none;" id="product-info">
-						<div class="offset1 span4">
-							<img id="big_img">
-						</div>
-						<div class="span6 container-fluid" style="text-align: left;">
-							<form class="form-horizontal">
-								<div class="control-group">
-									<label class="control-label" for="prd_name">商品名称</label>
-									<div class="controls">
-									    <span id="prd_name"></span>
+				<div style="display: none;" id="product-info">
+					<div class="row-fluid">
+						<div class="span12"
+							style="float: none; margin-left: auto; margin-right: auto;">
+							<div class="offset1 span4">
+								<img id="big_img">
+							</div>
+							<div class="span6 container-fluid" style="text-align: left;">
+								<form class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label" for="prd_name">商品名称</label>
+										<div class="controls">
+											<span id="prd_name"></span>
+										</div>
 									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label" for="prd_price">价格</label>
-									<div class="controls">
-										<span id="prd_price"></span>
+									<div class="control-group">
+										<label class="control-label" for="prd_price">价格</label>
+										<div class="controls">
+											<span id="prd_price"></span>
+										</div>
 									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label" for="count">数量</label>
-									<div class="controls">
-										<input type="text" id="count" class="spinner input-small" value="1">
+									<div class="control-group">
+										<label class="control-label" for="count">数量</label>
+										<div class="controls">
+											<input type="text" id="count" class="spinner input-small"
+												value="1">
+										</div>
 									</div>
-								</div>
-								<div class="control-group">
-								    <div class="controls">
-								        <button type="button" id="btn-money" class="btn btn-info">计算价格</button>
-								    </div>
-								</div>
-							</form>
+									<div class="control-group">
+										<div class="controls">
+											<button type="button" id="btn-money" class="btn btn-info">计算价格</button>
+										</div>
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row-fluid">
-				    <ul class="tiles">
-				        <li class="teal long span10">
-				           <a><span class="count" id="results"></span></a>
-				        </li>
-				    </ul>
+					<div class="row-fluid">
+						<ul class="stats" style="margin-top:20px;">
+							<li class="lightred">
+							    <div class="details" id="results"></div>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
     	</div>
@@ -111,6 +126,11 @@
         	$('#currency').empty().text('100 韩元（₩）= ' + resp.currency + '人民币元（￥）');
          });
         
+        var calResults = function(){
+        	var result = (price * $('#count').val() + 2500)/100 * currency;
+        	$('#results').empty().text('(' + price + '₩ X '+ $('#count').val() + ' + 2500₩) ÷ 100 X ' + currency + ' = ￥' + result);
+        };
+        
         $('#btn-price').click(function(){
             $.post('<%=request.getContextPath()%>/info', $('#link-form').serialize()).done(function(resp){
                 $('#product-info').show();
@@ -121,12 +141,12 @@
                 }
                 $('#prd_price').empty().text(resp.price);
                 $('#prd_name').empty().text(resp.name);
+                calResults();
             });
         });
         
         $('#btn-money').click(function(){
-        	var result = (price * $('#count').val() + 2500)/100 * currency;
-        	$('#results').empty().text('(' + price + ' X '+ $('#count').val() + ' + 2500) ÷ 100 X ' + currency + ' = ' + result + "(人民币元)")
+        	calResults();
         });
     });
 </script>
