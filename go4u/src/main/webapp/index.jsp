@@ -128,7 +128,7 @@
         
         var calResults = function(){
         	var result = (price * $('#count').val() + 2500)/100 * currency;
-        	$('#results').empty().text('(' + price + '₩ X '+ $('#count').val() + ' + 2500₩) ÷ 100 X ' + currency + ' = ￥' + result);
+        	$('#results').empty().text('(' + price + '₩ X '+ $('#count').val() + ' + 2500₩) ÷ 100 X ' + currency + ' = ￥' + result.toFixed(2));
         };
         
         $('#btn-price').click(function(){
