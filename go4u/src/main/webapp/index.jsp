@@ -26,6 +26,12 @@
     margin-right: 20px;
     font-weight:bold;
 }
+
+#main {
+    margin-left: auto;
+    margin-right: auto;
+    max-width:1200px;
+}
 </style>
 
 <script src="<%=request.getContextPath() %>/assets/js/jquery.min.js"></script>
