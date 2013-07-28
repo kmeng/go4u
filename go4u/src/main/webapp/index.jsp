@@ -49,7 +49,9 @@
     <div id="content" class="container-fluid">
     	<div id="main">
     	    <div class="page-header" style="margin-top:100px; margin-bottom:20px; text-align:center">
-    	        <img src="<%=request.getContextPath()%>/assets/img/logo.png">
+    	        <a href="http://dresschannel.taobao.com" target="about:blank">
+                    <img src="<%=request.getContextPath()%>/assets/img/logo.png">
+    	        </a>
     	    </div>
     		<div class="container-fluid">
 				<div class="row-fluid" style="text-align:center;">
@@ -60,6 +62,9 @@
 							<input id="btn-price" type="submit" class="btn btn-danger" value="&nbsp;&nbsp;GO&nbsp;&nbsp;">
 						</div>
 					</form>
+				</div>
+				<div class="row-fluid" style="text-align:center">
+                    <EMBED height="550" type="application/x-shockwave-flash" width="950" src="http://stylenanda.cafe24.com/web/design4/120313.swf" enablecontextmenu="0" AUTOSTART="1">
 				</div>
 			</div>
 		</div>

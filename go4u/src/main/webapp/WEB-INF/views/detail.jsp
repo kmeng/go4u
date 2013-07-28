@@ -54,6 +54,9 @@
     	<div id="main">
     		<div class="container-fluid">
     		    <div class="page-header" style="margin-top:50px;margin-bottom:20px;text-align:center">
+    	            <a href="http://dresschannel.taobao.com" target="about:blank">
+                        <img src="<%=request.getContextPath()%>/assets/img/logo.png">
+    	            </a>
     		    </div>
 				<div class="row-fluid" style="text-align:center">
 					<form class="form-validate form-horizontal" method="post" action="<%=request.getContextPath() %>/info" id="link-form">
