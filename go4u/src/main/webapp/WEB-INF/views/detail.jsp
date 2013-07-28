@@ -1,4 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+
+<%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,21 +52,81 @@
 <body>
     <div id="content" class="container-fluid">
     	<div id="main">
-    	    <div class="page-header" style="margin-top:100px; margin-bottom:20px; text-align:center">
-    	        <img src="<%=request.getContextPath()%>/assets/img/logo.png">
-    	    </div>
     		<div class="container-fluid">
-				<div class="row-fluid" style="text-align:center;">
+    		    <div class="page-header" style="margin-top:50px;margin-bottom:20px;text-align:center">
+    		    </div>
+				<div class="row-fluid" style="text-align:center">
 					<form class="form-validate form-horizontal" method="post" action="<%=request.getContextPath() %>/info" id="link-form">
 						<div class="control-group">
 							<input class="span10 input" name="url" data-url-rule="true"
-								data-required-rule="true" placeholder="代购商品链接">
+								data-required-rule="true" placeholder="代购商品链接" value="${url}">
 							<input id="btn-price" type="submit" class="btn btn-danger" value="&nbsp;&nbsp;GO&nbsp;&nbsp;">
 						</div>
 					</form>
 				</div>
+				<div id="product-info">
+					<div class="row-fluid">
+						<div class="span12"
+							style="float: none; margin-left: auto; margin-right: auto;">
+							<div class="offset1 span4">
+								<img id="big_img" src="${info.main_img}">
+							</div>
+							<div class="span6 container-fluid" style="text-align: left;">
+								<form class="form-horizontal">
+									<div class="control-group">
+										<label class="control-label" for="prd_name">商品名称</label>
+										<div class="controls">
+											<span id="prd_name">${info.name}</span>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label" for="prd_price">价格</label>
+										<div class="controls">
+											<span id="prd_price">${info.price}</span>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label" for="count">数量</label>
+										<div class="controls">
+											<input type="text" id="count" class="spinner input-small"
+												value="1">
+										</div>
+									</div>
+									<div class="control-group">
+										<div class="controls">
+											<button type="button" id="btn-money" class="btn btn-info">计算价格</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid" style="text-align:center">
+						<ul class="stats" style="margin-top:20px;width:100%">
+							<li class="lightred" style="width:100%">
+							    <div class="details" id="results"></div>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
-		</div>
+    	</div>
     </div>
+
+	<script>
+    $(function(){        
+        var calResults = function(){
+        	var currency = ${currency};
+        	var price = parseFloat('${info.price}'.replace(',',''));
+        	var result = (price * $('#count').val() + 2500)/100 * currency;
+        	$('#results').empty().text('(' + price + '₩ X '+ $('#count').val() + ' + 2500₩) ÷ 100 X ' + currency + ' = ￥' + result.toFixed(2));
+        };
+        
+        $('#btn-money').click(function(){
+        	calResults();
+        });
+    	calResults();
+    });
+</script>
 </body>
 </html>
