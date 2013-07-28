@@ -63,9 +63,11 @@
 						</div>
 					</form>
 				</div>
+				<!-- 
 				<div class="row-fluid" style="text-align:center">
                     <EMBED height="550" type="application/x-shockwave-flash" width="950" src="http://stylenanda.cafe24.com/web/design4/120313.swf" enablecontextmenu="0" AUTOSTART="1">
 				</div>
+				 -->
 			</div>
 		</div>
     </div>
