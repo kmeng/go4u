@@ -13,14 +13,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ParserFactory implements InitializingBean {
-	private Map<String, List<String>> domainRuleListMap = new HashMap<String, List<String>>();
+	private static Map<String, ProductParser> domainRuleMap = new HashMap<String, ProductParser>();
 	
 	public static ProductParser getParser(String domain){
+        if(domainRuleMap.containsKey(domain)){
+            return domainRuleMap.get(domain);
+        }
 		return null;
 	}
 
 	public void afterPropertiesSet() throws Exception {
-		File parserFolder = new File("classpath:/parser");
+		File parserFolder = new File(ParserFactory.class.getResource("/parser").getPath());
 		File[] parserFiles = parserFolder.listFiles();
 		for(File parserFile : parserFiles){
 			BufferedReader br = new BufferedReader(new FileReader(parserFile));
@@ -29,7 +32,7 @@ public class ParserFactory implements InitializingBean {
 			while((rule = br.readLine()) != null){
 				ruleList.add(rule);
 			}
-			domainRuleListMap.put(parserFile.getName(), ruleList);
+			domainRuleMap.put(parserFile.getName(), new ProductParserImpl(ruleList));
 		}
 	}
 }

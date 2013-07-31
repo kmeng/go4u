@@ -1,11 +1,11 @@
 package com.go4u.service;
 
+import com.go4u.parser.ParserFactory;
+import com.go4u.parser.ProductParser;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.htmlparser.Node;
-import org.htmlparser.NodeFilter;
-import org.htmlparser.Parser;
 import org.htmlparser.Tag;
 import org.htmlparser.tags.ImageTag;
 import org.htmlparser.tags.InputTag;
@@ -15,25 +15,33 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class InfoService {
 
-    public Map<String, String> retrieveLinkInfo(String link) {
-        Map<String, String> tagsMap = new HashMap<String, String>();
+    public Map<String, Object> retrieveLinkInfo(String link) {
+        Map<String, Object> tagsMap = new HashMap<String, Object>();
 
         try {
-            Parser parser = new Parser();
-            parser.setURL(link);
-            NodeList tagsList = parser.parse(new NodeFilter(){
-                public boolean accept(Node node) {
-                    return node instanceof Tag;
-                }
-            });
+            String domainRegex = "(https|http)://([^/]+).*";
+            Pattern domainPattern = Pattern.compile(domainRegex);
+            Matcher domainMatcher = domainPattern.matcher(link);
 
-            tagsMap.put("main_img", getMainImage(tagsList));
-            tagsMap.put("price", getPrice(tagsList));
-            tagsMap.put("name", getProductName(tagsList));
+            if(domainMatcher.find()){
+                ProductParser productParser = ParserFactory.getParser(domainMatcher.group(2));
+                if(productParser != null){
+                    productParser.parse(link);
+                    String name = productParser.getProductName();
+                    double price = productParser.getPrice();
+                    String image = productParser.getImage();
+
+                    tagsMap.put("main_img", image);
+                    tagsMap.put("price", price);
+                    tagsMap.put("name", name);
+                }
+            }
         } catch(Exception e){
             e.printStackTrace();
         }

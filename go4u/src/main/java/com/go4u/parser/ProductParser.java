@@ -6,7 +6,7 @@ public interface ProductParser {
 	void parse(String link);
 	double getPrice();
 	double getDiscountPrice();
-	String getName();
+	String getProductName();
 	String getImage();
 	List<String> getColorList();
 }

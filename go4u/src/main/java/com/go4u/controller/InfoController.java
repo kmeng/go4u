@@ -22,7 +22,7 @@ public class InfoController {
 
     @RequestMapping(value="/info")
     public String  getLinkInfo(@RequestParam String url, HttpServletRequest request){
-    	Map<String, String> infoMap = infoService.retrieveLinkInfo(url);
+    	Map<String, Object> infoMap = infoService.retrieveLinkInfo(url);
     	request.setAttribute("info", infoMap);
     	request.setAttribute("url", url);
     	request.setAttribute("currency", infoService.getExchangeRate());

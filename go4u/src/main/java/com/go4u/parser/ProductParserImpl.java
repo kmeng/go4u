@@ -13,18 +13,17 @@ import org.htmlparser.Tag;
 import org.htmlparser.tags.ImageTag;
 import org.htmlparser.tags.InputTag;
 import org.htmlparser.tags.Span;
+import org.htmlparser.tags.TitleTag;
 import org.htmlparser.util.NodeList;
 
-import com.opensymphony.module.sitemesh.taglib.decorator.TitleTag;
-
 public class ProductParserImpl implements ProductParser {
-	private Map<String, String> ruleMap = new HashMap<String, String>();
+	private Map<String, Rule> ruleMap = new HashMap<String, Rule>();
 	private NodeList tagsList = null;
 
 	public ProductParserImpl(List<String> ruleList) {
 		for (String rawRule : ruleList) {
 			String[] nameRulePair = rawRule.split("=");
-			ruleMap.put(nameRulePair[0], nameRulePair[1]);
+			ruleMap.put(nameRulePair[0], new Rule(nameRulePair[1]));
 		}
 	}
 
@@ -45,23 +44,31 @@ public class ProductParserImpl implements ProductParser {
 	@Override
 	public double getPrice() {
 		return 0;
-	}	
-	public String getAttributeValue(Class tagClass,
-			Map<String, String> toBeMatchedAttributeMap, String attribute) {
+	}
+	
+	private String getAttributeValue(Rule rule) {
+		Class tagClass = rule.getTagClass();
+		Map<String, String> toBeMatchedAttributeMap = rule.getToBeMatchedAttributeMap();
+		String attributeName = rule.getAttributeName();
 		for (int i = 0; i < tagsList.size(); i++) {
 			Node node = tagsList.elementAt(i);
 			if (node.getClass() == tagClass) {
 				Tag tag = (Tag) node;
+                boolean anyMisMatch = false;
 				for (String key : toBeMatchedAttributeMap.keySet()) {
 					String toBeVerifiedAttributeValue = tag.getAttribute(key);
 
-					if (toBeVerifiedAttributeValue != null
-							&& toBeVerifiedAttributeValue
+					if (toBeVerifiedAttributeValue == null
+							|| !toBeVerifiedAttributeValue
 									.equals(toBeMatchedAttributeMap.get(key))) {
-						tagsList.remove(i);
-						return tag.getAttribute(attribute);
+                        anyMisMatch = true;
+                        break;
 					}
 				}
+
+                if(!anyMisMatch){
+                    return tag.getAttribute(attributeName);
+                }
 			}
 		}
 		return null;
@@ -69,54 +76,59 @@ public class ProductParserImpl implements ProductParser {
 
 	@Override
 	public double getDiscountPrice() {
-		// TODO Auto-generated method stub
-		return 0;
+        return getTagDoubleValue("price");
 	}
 
 	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getProductName() {
+		return getTagTextValue("name");
 	}
 
 	@Override
 	public String getImage() {
-		// TODO Auto-generated method stub
-		return null;
+        return getTagTextValue("image");
 	}
 
 	@Override
 	public List<String> getColorList() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public static void main(String[] args){
-		Rule rule = new Rule("input[name:'product_name'][type:'hidden'].value");
-		rule.getTagClass();
-	}
+
+    private String getTagTextValue(String name){
+        if(ruleMap.containsKey(name)){
+            Rule rule = ruleMap.get(name);
+            return this.getAttributeValue(rule);
+        }
+        return null;
+    }
+
+    private double getTagDoubleValue(String name){
+        try {
+            String textValue = getTagTextValue(name);
+            return Double.parseDouble(textValue.replaceAll(",", ""));
+        } catch(Exception e){
+            return Double.NaN;
+        }
+    }
 
 }
 
 class Rule {
 	private Class tagClass;
-	private Map<String, String> toBeMatchedAttributeMap;
+	private Map<String, String> toBeMatchedAttributeMap = new HashMap<String, String>();
 	private String attributeName;
 	
 	public Rule(String rawString){
-		String regex = "([a-zA-Z]+)((\\[([a-zA-Z]+)\\:'([^']+)'\\])+)\\.(.*)";
+		String regex = "([a-zA-Z]+)((\\[[a-zA-Z]+\\:'[^']+'\\])+)\\.(.*)";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(rawString);
 		if(matcher.find()){
 			//
 			getTagClass(matcher.group(1));
-			int totalFound = matcher.groupCount();
-			for(int i = 2; i < totalFound - 1; i ++){
-				
-			}
+			getToBeMatchedAttributeMap(matcher.group(2));
+			extractAttributeName(matcher.group(4));
 		}
 	}
-	
 
 	public Class getTagClass() {
 		return tagClass;
@@ -160,6 +172,22 @@ class Rule {
 			tagClass = TitleTag.class;
 		}
 	}
+	
+	private void getToBeMatchedAttributeMap(String attributeValuePairsStr){
+		String regex = "((\\[([a-zA-Z]+)\\:'([^']+)'\\])+)";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(attributeValuePairsStr);
+		if(matcher.find()){
+			toBeMatchedAttributeMap.put(matcher.group(3), matcher.group(4));
+			String remainPairStr = attributeValuePairsStr.substring(0, matcher.start(2));
+			if(!remainPairStr.isEmpty()){
+			    getToBeMatchedAttributeMap(attributeValuePairsStr.substring(0, matcher.start(2)));
+			}
+		}
+	}
 
-
+	
+	private void extractAttributeName(String attributeName){
+		this.attributeName = attributeName;
+	}
 }
