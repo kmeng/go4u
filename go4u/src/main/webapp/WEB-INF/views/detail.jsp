@@ -120,7 +120,7 @@
     $(function(){        
         var calResults = function(){
         	var currency = ${currency};
-        	var price = parseFloat('${info.price}'.replace(',',''));
+        	var price = ${info.price};
         	var result = (price * $('#count').val() + 2500)/100 * currency;
         	$('#results').empty().text('(' + price + '₩ X '+ $('#count').val() + ' + 2500₩) ÷ 100 X ' + currency + ' = ￥' + result.toFixed(2));
         };

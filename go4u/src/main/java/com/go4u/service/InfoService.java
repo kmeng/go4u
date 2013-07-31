@@ -67,40 +67,4 @@ public class InfoService {
     	}
     	return 0;
     }
-
-    private String getMainImage(NodeList nodeList){
-        return getTagAttributeValue(nodeList, ImageTag.class, "big_img", "src");
-    }
-
-    private String getPrice(NodeList nodeList){
-       return getTagAttributeValue(nodeList, InputTag.class, "product_price", "value");
-    }
-
-    private String getProductName(NodeList nodeList){
-        return getTagAttributeValue(nodeList, InputTag.class, "product_name", "value");
-    }
-
-    private String getTagAttributeValue(NodeList nodeList, Class tagClazz, String name, String attributeName){
-        for(int i = 0; i < nodeList.size(); i ++){
-            Node node = nodeList.elementAt(i);
-            if(node.getClass() ==  tagClazz){
-                Tag tag = (Tag)node;
-                String srcName = tag.getAttribute("name");
-                if(srcName == null){
-                	srcName = tag.getAttribute("id");
-                }
-                if(srcName != null && srcName.equals(name)){
-                    nodeList.remove(i);
-                    return tag.getAttribute(attributeName);
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    public static void main(String[] args){
-        System.out.println(new InfoService().getExchangeRate());
-    }
 }

@@ -43,45 +43,19 @@ public class ProductParserImpl implements ProductParser {
 
 	@Override
 	public double getPrice() {
-		return 0;
-	}
-	
-	private String getAttributeValue(Rule rule) {
-		Class tagClass = rule.getTagClass();
-		Map<String, String> toBeMatchedAttributeMap = rule.getToBeMatchedAttributeMap();
-		String attributeName = rule.getAttributeName();
-		for (int i = 0; i < tagsList.size(); i++) {
-			Node node = tagsList.elementAt(i);
-			if (node.getClass() == tagClass) {
-				Tag tag = (Tag) node;
-                boolean anyMisMatch = false;
-				for (String key : toBeMatchedAttributeMap.keySet()) {
-					String toBeVerifiedAttributeValue = tag.getAttribute(key);
-
-					if (toBeVerifiedAttributeValue == null
-							|| !toBeVerifiedAttributeValue
-									.equals(toBeMatchedAttributeMap.get(key))) {
-                        anyMisMatch = true;
-                        break;
-					}
-				}
-
-                if(!anyMisMatch){
-                    return tag.getAttribute(attributeName);
-                }
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public double getDiscountPrice() {
         return getTagDoubleValue("price");
 	}
 
 	@Override
+	public double getDiscountPrice() {
+        return getTagDoubleValue("discountPrice");
+	}
+
+	@Override
 	public String getProductName() {
-		return getTagTextValue("name");
+		String name = getTagTextValue("name");
+        name = name.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&quot;", "\"");
+        return name;
 	}
 
 	@Override
@@ -109,6 +83,34 @@ public class ProductParserImpl implements ProductParser {
         } catch(Exception e){
             return Double.NaN;
         }
+    }
+
+    private String getAttributeValue(Rule rule) {
+        Class tagClass = rule.getTagClass();
+        Map<String, String> toBeMatchedAttributeMap = rule.getToBeMatchedAttributeMap();
+        String attributeName = rule.getAttributeName();
+        for (int i = 0; i < tagsList.size(); i++) {
+            Node node = tagsList.elementAt(i);
+            if (node.getClass() == tagClass) {
+                Tag tag = (Tag) node;
+                boolean anyMisMatch = false;
+                for (String key : toBeMatchedAttributeMap.keySet()) {
+                    String toBeVerifiedAttributeValue = tag.getAttribute(key);
+
+                    if (toBeVerifiedAttributeValue == null
+                            || !toBeVerifiedAttributeValue
+                            .equals(toBeMatchedAttributeMap.get(key))) {
+                        anyMisMatch = true;
+                        break;
+                    }
+                }
+
+                if(!anyMisMatch){
+                    return tag.getAttribute(attributeName);
+                }
+            }
+        }
+        return null;
     }
 
 }
