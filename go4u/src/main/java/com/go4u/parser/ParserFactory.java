@@ -49,7 +49,8 @@ public class ParserFactory implements InitializingBean {
                 while((rule = br.readLine()) != null){
                     ruleList.add(rule);
                 }
-                parserMap.put(parserFile.getName(), new ProductParserImpl(ruleList));
+//                parserMap.put(parserFile.getName(), new ProductParserImpl(ruleList));
+                parserMap.put(parserFile.getName(), new ProductParserJSoupImpl(ruleList));
             }
         }
 
