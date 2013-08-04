@@ -1,0 +1,3 @@
+name=td[height=25][colspan=3].html
+price=span[class=mk_price].html
+image=img[id=lens_img][class=detail_image].src

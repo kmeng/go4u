@@ -1,0 +1,5 @@
+name=table[width=400] td[colspan=3].html@@table[width=324] td[style=padding:8 5 6 5][align=left].html
+price=span[class=mk_price].html
+image=img#lens_img.src
+color=select[name=spcode] option:gt(1).text
+size=select[name=spcode2] option:gt(1).text

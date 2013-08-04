@@ -82,12 +82,28 @@
 											<span id="prd_name">${info.name}</span>
 										</div>
 									</div>
+                                    <c:if test="${empty info.discountPrice}">
 									<div class="control-group">
 										<label class="control-label" for="prd_price">价格</label>
 										<div class="controls">
 											<span id="prd_price">${info.price}</span>
 										</div>
 									</div>
+                                    </c:if>
+                                    <c:if test="${not empty info.discountPrice}">
+                                        <div class="control-group">
+                                            <label class="control-label" for="prd_origin_price">原价</label>
+                                            <div class="controls">
+                                                <span id="prd_origin_price" style="text-decoration: line-through;">${info.price}</span>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="prd_price">价格</label>
+                                            <div class="controls">
+                                                <span id="prd_price" style="color:#267326;font-weight: bold;" >${info.discountPrice}</span>
+                                            </div>
+                                        </div>
+                                    </c:if>
                                     <c:if test="${not empty info.colors}">
                                         <div class="control-group">
                                             <label class="control-label" for="prd_color">颜色</label>
@@ -144,7 +160,7 @@
     $(function(){        
         var calResults = function(){
         	var currency = ${currency};
-        	var price = ${info.price};
+        	var price = parseFloat($('#prd_price').html());
         	var result = (price * $('#count').val() + 2500)/100 * currency;
         	$('#results').empty().text('(' + price + '₩ X '+ $('#count').val() + ' + 2500₩) ÷ 100 X ' + currency + ' = ￥' + result.toFixed(2));
         };

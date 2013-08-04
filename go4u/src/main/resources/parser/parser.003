@@ -1,0 +1,5 @@
+name=td[align=left][bgcolor=#FFFFFF][height=30].text
+price=span#price_text.html
+image=img[id=lens_img][class=detail_image].src
+color=select#optionlist_0 option[origin].text
+size=select#optionlist_1 option[origin].text

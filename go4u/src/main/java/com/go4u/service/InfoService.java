@@ -31,6 +31,10 @@ public class InfoService {
 
                     tagsMap.put("main_img", productParser.getImage());
                     tagsMap.put("price", productParser.getPrice());
+                    double discountPrice = productParser.getDiscountPrice();
+                    if(!Double.isNaN(discountPrice)){
+                        tagsMap.put("discountPrice", productParser.getDiscountPrice());
+                    }
                     tagsMap.put("name", productParser.getProductName());
                     tagsMap.put("colors", productParser.getColorList());
                     tagsMap.put("sizes", productParser.getSizeList());

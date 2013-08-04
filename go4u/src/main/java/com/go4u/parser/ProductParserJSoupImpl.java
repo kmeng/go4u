@@ -18,19 +18,18 @@ public class ProductParserJSoupImpl implements ProductParser {
     private Logger logger = LoggerFactory.getLogger(ProductParserJSoupImpl.class);
 
     private Document document;
-    private Map<String, ValueRule> ruleMap = new HashMap<String, ValueRule>();
+    private Map<String, ValueRules> ruleMap = new HashMap<String, ValueRules>();
     private String domain;
 
     public ProductParserJSoupImpl(List<String> ruleList){
         for(String raw : ruleList){
-            ValueRule rule = new ValueRule(raw);
-            ruleMap.put(rule.getName(), rule);
+            ValueRules valueRules = new ValueRules(raw);
+            ruleMap.put(valueRules.getName(), valueRules);
         }
     }
 
     public void parse(String link) {
         try {
-
             String domainRegex = "(https|http)://([^/]+).*";
             Pattern domainPattern = Pattern.compile(domainRegex);
             Matcher domainMatcher = domainPattern.matcher(link);
@@ -83,12 +82,13 @@ public class ProductParserJSoupImpl implements ProductParser {
             return null;
         }
 
-        ValueRule valueRule = ruleMap.get(name);
-        Elements elements = document.select(valueRule.getConstraint());
-        if(!elements.isEmpty()){
+        ValueRules valueRules = ruleMap.get(name);
+        valueRules.reset();
+        Elements elements = selectTargetElements(valueRules);
+        if(elements != null && !elements.isEmpty()){
             List<String> valueList = new ArrayList<String>();
             for(Element element : elements){
-                String singleValue = getTextValue(element, valueRule);
+                String singleValue = getTextValue(element, valueRules);
                 if(singleValue != null && !singleValue.isEmpty()){
                     valueList.add(singleValue);
                 }
@@ -103,16 +103,30 @@ public class ProductParserJSoupImpl implements ProductParser {
             return null;
         }
 
-        ValueRule valueRule = ruleMap.get(name);
-        Elements elements = document.select(valueRule.getConstraint());
-        if(!elements.isEmpty()){
+        ValueRules valueRules = ruleMap.get(name);
+        valueRules.reset();
+        Elements elements = selectTargetElements(valueRules);
+        if(elements != null && !elements.isEmpty()){
             Element element = elements.get(0);
-            return getTextValue(element, valueRule);
+            return getTextValue(element, valueRules);
         }
         return "";
     }
 
-    private String getTextValue(Element element, ValueRule valueRule){
+    private Elements selectTargetElements(ValueRules valueRules){
+        while(valueRules.hasNext()){
+            ValueRule valueRule = valueRules.next();
+            Elements elements = document.select(valueRule.getConstraint());
+            if(elements != null && !elements.isEmpty()){
+                return elements;
+            }
+        }
+
+        return null;
+    }
+
+    private String getTextValue(Element element, ValueRules valueRules){
+        ValueRule valueRule = valueRules.getCurrent();
         String targetAttribute = valueRule.getTargetAttribute();
         String extraConstraint = valueRule.getExtraConstraint();
         String value = null;
@@ -120,6 +134,9 @@ public class ProductParserJSoupImpl implements ProductParser {
             value = element.text();
         } else if(targetAttribute.equals("html")){
             value = element.html();
+            if(value.contains("<img")){
+               value = value.replaceAll("src=\"/", "src=\"" + domain +  "/");
+            }
         } else {
             value = element.attr(targetAttribute);
         }
@@ -129,7 +146,7 @@ public class ProductParserJSoupImpl implements ProductParser {
     private double getDoubleValue(String name){
         String textValue = getTextValue(name);
         try {
-           return Double.parseDouble(textValue.replaceAll(",", ""));
+           return Double.parseDouble(textValue.replaceAll("[^(\\d|\\.)]", ""));
         } catch(Exception e){
            return Double.NaN;
         }

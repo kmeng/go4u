@@ -1,28 +1,17 @@
 package com.go4u.parser;
 
 public class ValueRule {
-    private String name;
     private String constraint;
     private String targetAttribute;
     private String extraConstraint;
 
     public ValueRule(String rawString){
-        int firstIndexOfEqual = rawString.indexOf("=");
-        name = rawString.substring(0, firstIndexOfEqual);
-        String[] constraints = rawString.substring(firstIndexOfEqual + 1).split("\\.");
+        String[] constraints = rawString.split("\\.");
         constraint = constraints[0];
         targetAttribute = constraints[1];
         if(constraints.length == 3){
             extraConstraint = constraints[2];
         }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getConstraint() {
