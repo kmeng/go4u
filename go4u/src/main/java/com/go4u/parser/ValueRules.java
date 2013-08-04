@@ -36,16 +36,16 @@ public class ValueRules {
 
     public ValueRule next(){
         ValueRule valueRule = valueRuleList.get(index);
-        index = (index == valueRuleList.size() - 1) ? index : index+1;
+        index ++;
         return valueRule;
     }
 
     public boolean hasNext(){
-        return valueRuleList != null && !valueRuleList.isEmpty() && index < valueRuleList.size() && index != valueRuleList.size() - 1;
+        return valueRuleList != null && !valueRuleList.isEmpty() && index < valueRuleList.size();
     }
 
     public int index(){
-        return index;
+        return index - 1;
     }
 
     public void reset(){
