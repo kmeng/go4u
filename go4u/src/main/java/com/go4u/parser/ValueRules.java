@@ -41,7 +41,7 @@ public class ValueRules {
     }
 
     public boolean hasNext(){
-        return valueRuleList != null && !valueRuleList.isEmpty() && index < valueRuleList.size();
+        return valueRuleList != null && !valueRuleList.isEmpty() && index < valueRuleList.size() && index != valueRuleList.size() - 1;
     }
 
     public int index(){
