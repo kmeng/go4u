@@ -9,4 +9,5 @@ public interface ProductParser {
 	String getProductName();
 	String getImage();
 	List<String> getColorList();
+    List<String> getSizeList();
 }

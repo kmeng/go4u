@@ -88,6 +88,30 @@
 											<span id="prd_price">${info.price}</span>
 										</div>
 									</div>
+                                    <c:if test="${not empty info.colors}">
+                                        <div class="control-group">
+                                            <label class="control-label" for="prd_color">颜色</label>
+                                            <div class="controls">
+                                                <select name="color" id="prd_color">
+                                                    <c:forEach var="color" items="${info.colors}">
+                                                        <option value="${color}">${color}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${not empty info.sizes}">
+                                        <div class="control-group">
+                                            <label class="control-label" for="prd_size">尺码</label>
+                                            <div class="controls">
+                                                <select name="size" id="prd_size">
+                                                    <c:forEach var="size" items="${info.sizes}">
+                                                        <option value="${size}">${size}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </c:if>
 									<div class="control-group">
 										<label class="control-label" for="count">数量</label>
 										<div class="controls">

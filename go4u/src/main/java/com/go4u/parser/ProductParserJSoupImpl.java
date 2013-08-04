@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,27 +70,60 @@ public class ProductParserJSoupImpl implements ProductParser {
 
     @Override
     public List<String> getColorList() {
+        return getMultiValues("color");
+    }
+
+    @Override
+    public List<String> getSizeList() {
+        return getMultiValues("size");
+    }
+
+    private List<String> getMultiValues(String name){
+        if(!ruleMap.containsKey(name)){
+            return null;
+        }
+
+        ValueRule valueRule = ruleMap.get(name);
+        Elements elements = document.select(valueRule.getConstraint());
+        if(!elements.isEmpty()){
+            List<String> valueList = new ArrayList<String>();
+            for(Element element : elements){
+                String singleValue = getTextValue(element, valueRule);
+                if(singleValue != null && !singleValue.isEmpty()){
+                    valueList.add(singleValue);
+                }
+            }
+            return valueList;
+        }
         return null;
     }
 
     private String getTextValue(String name){
+        if(!ruleMap.containsKey(name)){
+            return null;
+        }
+
         ValueRule valueRule = ruleMap.get(name);
         Elements elements = document.select(valueRule.getConstraint());
         if(!elements.isEmpty()){
             Element element = elements.get(0);
-            String targetAttribute = valueRule.getTargetAttribute();
-            String extraConstraint = valueRule.getExtraConstraint();
-            String value = null;
-            if(targetAttribute.equals("text")){
-                value = element.text();
-            } else if(targetAttribute.equals("html")){
-                value = element.html();
-            } else {
-                value = element.attr(targetAttribute);
-            }
-            return value;
+            return getTextValue(element, valueRule);
         }
         return "";
+    }
+
+    private String getTextValue(Element element, ValueRule valueRule){
+        String targetAttribute = valueRule.getTargetAttribute();
+        String extraConstraint = valueRule.getExtraConstraint();
+        String value = null;
+        if(targetAttribute.equals("text")){
+            value = element.text();
+        } else if(targetAttribute.equals("html")){
+            value = element.html();
+        } else {
+            value = element.attr(targetAttribute);
+        }
+        return value;
     }
 
     private double getDoubleValue(String name){

@@ -5,11 +5,6 @@ import com.go4u.parser.ProductParser;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.htmlparser.Node;
-import org.htmlparser.Tag;
-import org.htmlparser.tags.ImageTag;
-import org.htmlparser.tags.InputTag;
-import org.htmlparser.util.NodeList;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -33,13 +28,12 @@ public class InfoService {
                 ProductParser productParser = ParserFactory.getParser(domainMatcher.group(2));
                 if(productParser != null){
                     productParser.parse(link);
-                    String name = productParser.getProductName();
-                    double price = productParser.getPrice();
-                    String image = productParser.getImage();
 
-                    tagsMap.put("main_img", image);
-                    tagsMap.put("price", price);
-                    tagsMap.put("name", name);
+                    tagsMap.put("main_img", productParser.getImage());
+                    tagsMap.put("price", productParser.getPrice());
+                    tagsMap.put("name", productParser.getProductName());
+                    tagsMap.put("colors", productParser.getColorList());
+                    tagsMap.put("sizes", productParser.getSizeList());
                 }
             }
         } catch(Exception e){
