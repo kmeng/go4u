@@ -22,8 +22,8 @@ name=td[height=25][colspan=3].html
 price=span[class=mk_price].html
 image=img[id=lens_img][class=detail_image].src
 
-[www.aka.co.kr]
-name=td[style^=font-weight:bold;font-size:11pt;].text
+[www.aka.co.kr,www.babirolen.com]
+name=td[style^=font-weight:bold;font-size:11pt;].text@@p[class=prdname].html
 price=span#price_text.text
 discountPrice=input#disprice[type=hidden].value
 image=img[id=lens_img][class=detail_image].src
@@ -45,10 +45,12 @@ color=select[name=option0] option:gt(0).text
 size=select[name=option1] option:gt(0).text
 
 [www.banyvivian.co.kr,banyvivian.co.kr]
+encoding=euc-kr
 name=input[name=I_Name].value
 image=div#bimg_view_0 img.src
 price=input[name=ori_price].value
 discountPrice=input[name=now_price].value
+color=select[name^=Spec] option:gt(0).text
 
 [www.bongjashop.com]
 name=p[class=name].text

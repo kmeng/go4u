@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +21,16 @@ public class ProductParserJSoupImpl implements ProductParser {
     private Document document;
     private Map<String, ValueRules> ruleMap = new HashMap<String, ValueRules>();
     private String domain;
+    private String encoding;
 
     public ProductParserJSoupImpl(List<String> ruleList){
         for(String raw : ruleList){
-            ValueRules valueRules = new ValueRules(raw);
-            ruleMap.put(valueRules.getName(), valueRules);
+            if(raw.startsWith("encoding")){
+                encoding = raw.split("=")[1];
+            } else {
+                ValueRules valueRules = new ValueRules(raw);
+                ruleMap.put(valueRules.getName(), valueRules);
+            }
         }
     }
 
@@ -36,7 +42,13 @@ public class ProductParserJSoupImpl implements ProductParser {
             if(domainMatcher.find()){
                 domain = domainMatcher.group(1) + "://" + domainMatcher.group(2);
             }
-            document = Jsoup.connect(link).get();
+
+            //Some site doesn't set encoding explicitly.
+            if(encoding == null){
+                document = Jsoup.connect(link).get();
+            } else {
+                document = Jsoup.parse(new URL(link).openStream(), encoding, link);
+            }
         } catch(Exception e){
             logger.error("Error occurs when parsing [" + link + "]: ", e);
         }
