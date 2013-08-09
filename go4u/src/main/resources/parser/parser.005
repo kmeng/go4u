@@ -1,6 +1,0 @@
-name=td[style^=font-weight:bold;font-size:11pt;].text
-price=span#price_text.text
-discountPrice=input#disprice[type=hidden].value
-image=img[id=lens_img][class=detail_image].src
-color=select#optionlist_0 option[origin].text
-size=select#optionlist_1 option[origin].text

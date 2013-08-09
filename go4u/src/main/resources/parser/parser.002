@@ -1,5 +1,0 @@
-name=td[style=border-bottom:solid 1px #e9e9e9; padding-bottom:6px;][colspan=4].html
-price=span[class=mk_price].html
-image=img[id=lens_img][class=detail_image].src
-color=select#MK_p_s_0 option[price].text
-size=select#MK_p_s_1 option[price].text

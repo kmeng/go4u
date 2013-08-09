@@ -1,0 +1,58 @@
+[www.partysu.co.kr,www.minsshop.com,www.bonjourlady.com,www.shes-story.co.kr,www.vividress.co.kr,www.11am.co.kr,www.masandchris.co.kr,www.jiinstyle.com,www.yubsshop.com,www.aura-j.co.kr,www.mersh.co.kr,www.walkingcoco.co.kr,www.tamnatamna.co.kr,www.whochu.kr,www.limview.co.kr,www.planj.co.kr,www.redopin.co.kr,www.dabagirl.co.kr,www.etashop.co.kr,www.babinpumkin.com,www.byther.co.kr,www.45seven.com,www.niponjjuya.com,www.ullala.kr,www.imvely.com,www.pinkboll.co.kr,www.qng.co.kr,www.sultang.co.kr,www.mutnam.com]
+name=input[name=product_name].value
+image=img[name=big_img].src
+price=input[name=product_price].value
+
+[www.aboki.net]
+name=td[style=border-bottom:solid 1px #e9e9e9; padding-bottom:6px;][colspan=4].html
+price=span[class=mk_price].html
+image=img[id=lens_img][class=detail_image].src
+color=select#MK_p_s_0 option[price].text
+size=select#MK_p_s_1 option[price].text
+
+[www.anappletree.com]
+name=td[align=left][bgcolor=#FFFFFF][height=30].text
+price=span#price_text.html
+image=img[id=lens_img][class=detail_image].src
+color=select#optionlist_0 option[origin].text
+size=select#optionlist_1 option[origin].text
+
+[www.annadiva.com]
+name=td[height=25][colspan=3].html
+price=span[class=mk_price].html
+image=img[id=lens_img][class=detail_image].src
+
+[www.aka.co.kr]
+name=td[style^=font-weight:bold;font-size:11pt;].text
+price=span#price_text.text
+discountPrice=input#disprice[type=hidden].value
+image=img[id=lens_img][class=detail_image].src
+color=select#optionlist_0 option[origin].text
+size=select#optionlist_1 option[origin].text
+
+[www.attystory.com,www.aliceribbon.tv]
+name=table[width=400] td[colspan=3].html@@table[width=324] td[style=padding:8 5 6 5][align=left].html
+price=span[class=mk_price].html
+image=img#lens_img.src
+color=select[name=spcode] option:gt(1).text
+size=select[name=spcode2] option:gt(1).text
+
+[www.bubbleandchic.co.kr]
+name=input[name=product_name].value
+image=input[name=product_org_img].value
+price=input[name=product_price].value
+color=select[name=option0] option:gt(0).text
+size=select[name=option1] option:gt(0).text
+
+[www.banyvivian.co.kr,banyvivian.co.kr]
+name=input[name=I_Name].value
+image=div#bimg_view_0 img.src
+price=input[name=ori_price].value
+discountPrice=input[name=now_price].value
+
+[www.bongjashop.com]
+name=p[class=name].text
+image=img#mainImg.src
+price=td[class=nprice].text
+discountPrice=input#price.value
+color=select#optionlist_0 option:gt(0).text

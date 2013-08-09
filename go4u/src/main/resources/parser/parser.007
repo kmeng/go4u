@@ -1,5 +1,0 @@
-name=input[name=product_name].value
-image=input[name=product_org_img].value
-price=input[name=product_price].value
-color=select[name=option0] option:gt(0).text
-size=select[name=option1] option:gt(0).text

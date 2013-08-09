@@ -1,3 +1,0 @@
-name=input[name=product_name].value
-image=img[name=big_img].src
-price=input[name=product_price].value
