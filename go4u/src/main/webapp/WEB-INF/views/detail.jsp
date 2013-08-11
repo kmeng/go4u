@@ -98,7 +98,7 @@
                                             </div>
                                         </div>
                                         <div class="control-group">
-                                            <label class="control-label" for="prd_price">价格</label>
+                                            <label class="control-label" for="prd_price">现价</label>
                                             <div class="controls">
                                                 <span id="prd_price" style="color:#267326;font-weight: bold;" >${info.discountPrice}</span>
                                             </div>
