@@ -21,8 +21,10 @@ size=select#optionlist_1 option[origin].text
 
 [www.annadiva.com,www.dodohip.co.kr]
 name=td[height=25][colspan=3].html@@table[width=350][align=center] td:eq(0).html
-price=span[class=mk_price].html
+price=span[class=mk_consumer_price].html@@span[class=mk_price].html
+discountPrice=span[class=mk_price].html
 image=img[id=lens_img][class=detail_image].src
+color=select[name=spcode] option:gt(1).text
 
 [www.aka.co.kr,www.babirolen.com,www.ddaddadda.co.kr]
 name=td[style^=font-weight:bold;font-size:11pt;].text@@p[class=prdname].html
