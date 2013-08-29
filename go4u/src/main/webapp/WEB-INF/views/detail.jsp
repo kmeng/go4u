@@ -155,6 +155,11 @@
 			</div>
     	</div>
     </div>
+    <div id="footer">
+        <p>
+            Copyright &copy; 2013 DressChannel时尚频道  京ICP备13037906号-1
+        </p>
+    </div>
 
 	<script>
     $(function(){        
