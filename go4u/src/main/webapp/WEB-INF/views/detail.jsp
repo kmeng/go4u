@@ -164,7 +164,7 @@
 	<script>
     $(function(){        
         var calResults = function(){
-        	var currency = ${currency};
+        	var currency = ${currency} == 0 ? 0.57 : ${currency};
         	var price = parseFloat($('#prd_price').html());
         	var result = (price * $('#count').val() + 2500)/100 * currency;
         	$('#results').empty().text('(' + price + '₩ X '+ $('#count').val() + ' + 2500₩) ÷ 100 X ' + currency + ' = ￥' + result.toFixed(2));
