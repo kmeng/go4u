@@ -3,6 +3,7 @@ name=input[name=product_name].value
 image=img[name=big_img].src@@input[name=product_org_img].value
 price=input[name=product_price].value
 color=select#option0 option:gt(0).text@@select[name=option1] option:gt(1).text
+size=select#option1 option:gt(0).text
 
 [www.aboki.net,www.chichera.co.kr]
 name=td[style=border-bottom:solid 1px #e9e9e9; padding-bottom:6px;][colspan=4].html@@p[class=tit-prd].text
@@ -40,6 +41,20 @@ price=span[class=mk_price].html
 image=img#lens_img.src
 color=select[name=spcode] option:gt(1).text
 size=select[name=spcode2] option:gt(1).text
+
+[www.epicegirls.com]
+name=div[class=prd_info] h3.html
+price=span[class=mk_price].html
+image=img#lens_img.src
+color=td[class=prd_option] select[name=spcode] option:gt(1).text
+size=td[class=prd_option] select[name=spcode2] option:gt(1).text
+
+[www.envylook.com]
+name=h3[class=prodName].html
+price=span#consumer.html
+discountPrice=span[class=price].html
+image=table[class=prodImg] img:eq(0).src
+color=select[name^=opt] option:gt(0).text
 
 [www.bubbleandchic.co.kr]
 name=input[name=product_name].value
